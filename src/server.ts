@@ -2,6 +2,8 @@
 import express, { Request } from 'express';
 import cors from 'cors';
 import downloadRoutes from './routes/downloadRoutes';
+import downloadApiRoutes from './routes/downloadApiRoutes'; // <--- ВОТ ЭТА СТРОКА
+import chalk from 'chalk';
 
 // Расширяем тип Request для TypeScript
 declare module 'express-serve-static-core' {
@@ -22,9 +24,11 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/api/download', downloadRoutes);
+app.use('/download', downloadRoutes);
+app.use('/api/download', downloadApiRoutes);
 
 app.listen(PORT, () => {
   console.log(`🚀 Pinterest API Server запущен на http://localhost:${PORT}`);
-  console.log(`👉 GET http://localhost:${PORT}/api/download?url=<PIN_URL>&type=video`);
+  console.log(chalk.blue.underline(`👉 GET http://localhost:${PORT}/download?type=video&url=<PIN_URL>`));
+  console.log(chalk.blue.underline(`👉 GET API http://localhost:${PORT}/api/download?type=video&url=<PIN_URL>`));
 });
